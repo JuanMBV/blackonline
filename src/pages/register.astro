@@ -1,0 +1,46 @@
+---
+import LayoutAccount from "../layouts/LayoutAccount.astro"
+import FormZone from "../components/FormZone.astro"
+import RegisterForm from "../components/RegisterForm.astro"
+---
+
+<!-- <LayoutAccount title="Registrate">
+  <main class="flex flex-col items-center justify-center min-h-screen">
+    <div class="flex flex-col lg:flex-row bg-white max-h-[480px] max-w-5xl">
+      <div class="max-h-full max-w-full">
+        <img src="/logo_blackline.png" alt="Logo Blackline" class="h-28 p-4">
+        <h2 class="text-4xl text-center font-serif">Registrate</h2>
+        <p class="text-center text-xl font-semibold pb-3">¿Ya tienes cuenta? Inicia sesion <a href="/login" class="text-[#5537CB] underline">aqui</a></p>
+        
+        <form action="" class="px-6 flex flex-col lg:block">
+
+          <div class="flex flex-col lg:flex-row gap-2 text-xl pb-5">
+            <input type="text" placeholder="Nombre(s)" required class="border-2 border-gray-300 rounded-xl text-center px-5">
+            <input type="text" placeholder="Apellido(s)" required class="border-2 border-gray-300 rounded-xl text-center px-5">
+          </div>
+
+          <div class="flex flex-col lg:flex-row gap-2 text-xl pb-5">
+            <input type="tel" placeholder="Telefono" required class="border-2 border-gray-300 rounded-xl text-center px-5">
+            <input type="email" placeholder="Correo" required class="border-2 border-gray-300 rounded-xl text-center px-5">
+          </div>
+
+          <div class="flex flex-col max-w-full text-xl gap-5 pb-5">
+            <input type="password" placeholder="Contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5">
+            <input type="password" placeholder="Repetir contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5">
+          </div>
+          
+          <button type="submit" class="bg-black text-white text-xl rounded-xl py-2 px-56">Registrarse</button>
+        </form>
+      
+      </div>
+      <div>
+        <img src="/img.svg" alt="" class="max-h-full max-w-full hidden lg:block">
+      </div>
+    </div>
+  </main>
+</LayoutAccount> -->
+<LayoutAccount title="Registrate">
+  <FormZone>
+    <RegisterForm />
+  </FormZone> 
+</LayoutAccount>
