@@ -1,24 +1,79 @@
+---
+
+---
+
 <section>
   <h2 class="text-4xl text-center font-serif">REGISTRATE</h2>
   <p class="text-center text-xl font-semibold pb-3">¿Ya tienes cuenta? Inicia sesion <a href="/login" class="text-[#5537CB] underline">aqui</a></p>
 
-  <form action="" class="px-6 flex flex-col lg:block">
+  <form action="" method="POST" class="px-6 flex flex-col lg:block">
 
     <div class="flex flex-col lg:flex-row gap-2 text-xl pb-5">
-      <input type="text" placeholder="Nombre(s)" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
-      <input type="text" placeholder="Apellido(s)" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="firstName" type="text" placeholder="Nombre(s)" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="lastName" type="text" placeholder="Apellido(s)" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
     </div>
 
     <div class="flex flex-col lg:flex-row gap-2 text-xl pb-5">
-      <input type="tel" placeholder="Telefono" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
-      <input type="email" placeholder="Correo" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="tel" type="tel" maxlength="10" placeholder="Telefono" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="email" type="email" placeholder="Correo" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
     </div>
 
     <div class="flex flex-col max-w-full text-xl gap-5 pb-5">
-      <input type="password" placeholder="Contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
-      <input type="password" placeholder="Repetir contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5">
+      <input id="pass" minlength="8" maxlength="20" type="password" placeholder="Contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="confPass" minlength="8" maxlength="20" type="password" placeholder="Repetir contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5">
     </div>
     
     <button type="submit" class="bg-black text-white text-xl rounded-xl py-2 px-56">Registrarse</button>
   </form>
+
+  <script>
+    document.querySelector('form').addEventListener('submit', e => {
+      e.preventDefault()
+      
+      const firstName = document.getElementById('firstName') as HTMLInputElement
+      const lastName = document.getElementById('lastName') as HTMLInputElement
+      const tel = document.getElementById('tel') as HTMLInputElement
+      const email = document.getElementById('email') as HTMLInputElement
+      const pass = document.getElementById('pass') as HTMLInputElement
+      const confPass = document.getElementById('confPass') as HTMLInputElement
+
+      if (pass.value !== confPass.value) {
+        alert('Las contraseñas no coinciden')
+        return
+      }
+
+      const data = {
+        firstName: firstName.value,
+        lastName: lastName.value,
+        phone: tel.value,
+        email: email.value,
+        password: pass.value,
+      }
+
+      console.log(data)
+
+      // API: http://54.164.55.21
+
+      fetch('http://54.164.55.21/auth/register/client', {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json'
+        },
+        body: JSON.stringify(data)
+      })
+      .then(res => {
+        if(!res.ok) {
+          throw new Error('Ocurrio un error al registrar el cliente')
+        }
+        return res.json()
+      })
+      .then(data => {
+        localStorage.setItem('token', data.token)
+        window.location.href = '/'
+      })
+      .catch(error => {
+        console.error('Error:', error)
+      })
+    })
+  </script>
 </section>
