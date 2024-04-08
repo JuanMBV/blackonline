@@ -1,0 +1,62 @@
+---
+---
+
+<section>
+  <h2 class="text-4xl text-center px-8 font-serif">CÓDIGO DE VERIFICACIÓN</h2>
+  <p class="text-center text-base px-14 pb-3">Ingresa el código de verificación enviado a tu correo electronico</p>
+
+  <form action="" class="px-7 pt-4 flex flex-col lg:block">
+
+    <div class="flex flex-col pb-5">
+      <input id="code" type="text" maxlength="6" placeholder="Código" required class="border-2 border-gray-300 rounded-xl max-w-full text-center text-xl px-5 py-1">
+    </div>
+    
+    <button type="submit" class="bg-black text-white text-xl rounded-xl py-2 px-56">Confirmar</button>
+  </form>
+</section>
+
+<script>
+  const checkEmail = () => {
+    if(!localStorage.getItem('email')){
+      window.location.href = '/'
+    }
+  }
+
+  checkEmail()
+
+  document.querySelector('form').addEventListener('submit', e => {
+    e.preventDefault()
+
+    const code = document.getElementById('code') as HTMLInputElement
+    const email = localStorage.getItem('email')
+
+
+    const data = {
+      email: email,
+      code: code.value
+    }
+
+    console.log(data)
+
+    // API: http://54.164.55.21
+
+    fetch('http://54.164.55.21/validate-code', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => {
+      if(!res.ok){
+        alert('El código es incorrecto o ha expirado')
+        throw new Error('El código es incorrecto o ha expirado')
+      }
+      return res.json()
+    })
+    .then(data => {
+      localStorage.setItem('token', data.token)
+      window.location.href = '/change-password'
+    })
+  })
+</script>

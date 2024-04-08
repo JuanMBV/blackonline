@@ -1,0 +1,66 @@
+
+<section>
+  <h2 class="text-4xl text-center font-serif pb-5 px-8">INGRESA TU NUEVA CONTRASEÑA</h2>
+
+  <form action="" method="POST" class="px-6 flex flex-col lg:block">
+
+    <div class="flex flex-col max-w-full text-xl gap-5 pb-5">
+      <input id="pass" minlength="8" maxlength="20" type="password" placeholder="Nueva contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="confPass" minlength="8" maxlength="20" type="password" placeholder="Confirmar contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5">
+    </div>
+    
+    <button type="submit" class="bg-black text-white text-xl rounded-xl py-2 px-56">CONFIRMAR</button>
+  </form>
+</section>
+
+<script>
+  const checkAuth = () => {
+    if (!localStorage.getItem('email') || !localStorage.getItem('token')) {
+      window.location.href = '/'
+    }
+  }
+
+  checkAuth()
+
+  document.querySelector('form').addEventListener('submit', e => {
+    e.preventDefault()
+
+    const pass = document.getElementById('pass') as HTMLInputElement
+    const confPass = document.getElementById('confPass') as HTMLInputElement
+
+    if (pass.value !== confPass.value) {
+      alert('Las contraseñas no coinciden')
+      return
+    }
+
+    const email = localStorage.getItem('email')
+    const token = localStorage.getItem('token')
+
+    const data = {
+      email,
+      password: pass.value,
+    }
+
+    // API: http://54.164.55.21
+
+    fetch('http://54.164.55.21/change-password', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${token}`
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => {
+      if(!res.ok){
+        alert('Error al cambiar la contraseña')
+        throw new Error('Error al cambiar la contraseña')
+      }
+      return res.json()
+    })
+    .then(() => {
+      localStorage.removeItem('email')
+      window.location.href = '/'
+    })
+  })
+</script>
