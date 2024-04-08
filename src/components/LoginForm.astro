@@ -5,15 +5,56 @@
   <form action="" class="px-7 pt-4 flex flex-col lg:block">
 
     <div class="flex flex-col pb-5">
-      <input type="email" placeholder="Correo" required class="border-2 border-gray-300 rounded-xl max-w-full text-center text-xl px-5 py-1">
+      <input id="email" type="email" placeholder="Correo" required class="border-2 border-gray-300 rounded-xl max-w-full text-center text-xl px-5 py-1">
     </div>
 
     <div class="flex flex-col pb-5">
-      <input type="password" placeholder="Contraseña" required class="border-2 border-gray-300 rounded-xl max-w-full text-center text-xl px-5 py-1">
+      <input id="pass" type="password" maxlength="20" placeholder="Contraseña" required class="border-2 border-gray-300 rounded-xl max-w-full text-center text-xl px-5 py-1">
     </div>
     
     <button type="submit" class="bg-black text-white text-xl rounded-xl py-2 px-56">Confirmar</button>
   </form>
 
-  <p class="text-center text-xl font-semibold pt-5">¿Olvidó su contraseña? Ingrese <a href="/password" class="text-[#5537CB] underline">aquí</a></p>
+  <p class="text-center text-xl font-semibold pt-5">¿Olvidó su contraseña? Ingrese <a href="/reset-password" class="text-[#5537CB] underline">aquí</a></p>
 </section>
+
+<script>
+  document.querySelector('form').addEventListener('submit', e => {
+    e.preventDefault()
+    
+    const email = document.getElementById('email') as HTMLInputElement;
+    const pass = document.getElementById('pass') as HTMLInputElement;
+
+    const data = {
+      email: email.value,
+      password: pass.value
+    }
+
+    console.log(data)
+
+    // API: http://54.164.55.21
+
+    fetch('http://54.164.55.21/auth/login/client', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    })
+    .then(res => {
+      if(!res.ok) {
+        alert('Correo o contraseña incorrectos')
+        throw new Error('Ocurrio un error al iniciar sesion del cliente')    
+      }
+      return res.json()
+    })
+    .then(data => {
+      localStorage.setItem('token', data.token)
+      window.location.href = '/'
+    })
+    .catch(error => {
+      console.error('Error:', error)
+    })
+
+  })
+</script>
