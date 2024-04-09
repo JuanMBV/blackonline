@@ -1,23 +1,59 @@
 ---
-import Layout from '../layouts/Layout.astro';
+import SCard from "../components/SCard.astro"
+import WhatsappButton from "../components/WhatsappButton.astro"
+import Layout from "../layouts/Layout.astro"
 ---
 
-<Layout title="Welcome to Astro.">
-	<main class=" min-h-screen flex flex-col items-center justify-center gap-4">
-		<h1 class="text-white text-4xl font-semibold">Working...</h1>
-		<img src="/cat-working.gif" alt="Cat working">
-	</main>
+
+<Layout pageTitle="Bienvenido" pageDescription="Esta es la aplicación web oficial de Blackline S.A de C.V. Haz tus cotizaciones de impresiones, grabados y cortes láser y consigue lo que necesitas para tu negocio o proyecto personal.">
+    <section id="bienvenido" class="mb-24">
+        <div class="relative h-[350px] overflow-hidden bg-[url(/imglamp.png)] bg-cover bg-[50%] bg-no-repeat">
+            <div class="absolute bottom-0 left-0 right-0 top-0 h-full w-full overflow-hidden bg-black/60 bg-fixed">
+                <div class="flex h-full items-center justify-center">
+                    <div class="px-6 text-center text-white md:px-12">
+                        <h1 class="mb-6 text-5xl font-bold tracking-tight">BIENVENIDO</h1>
+                        <h3 class="mb-8 text-3xl font-bold">BLACKLINE EN LÍNEA</h3>
+                        <p class="text-wrap lg:mx-16">Esta es la aplicación web oficial de <b>Blackline S.A de C.V</b>. Haz tus cotizaciones de impresiones, grabados y cortes láser y consigue lo que necesitas para tu negocio o proyecto personal.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section id="conocenos" class="mb-24">
+        <div class="px-6 text-center md:px-12">
+            <h1 class="mb-6 text-5xl font-bold tracking-tight">CONÓCENOS</h1>
+            <h3 class="mb-8 text-3xl font-bold text-cyan-900">EL MEJOR DISEÑADOR GRÁFICO E IMPRENTA DE SALTILLO</h3>
+            <p class="text-wrap lg:mx-16"><b>Blackline S.A de C.V</b> es una empresa dedicada a proveer soluciones de diseño gráfico e imprenta y nos gusta satisfacer a nuestros clientes con trabajos impresionantes y de calidad.<br>En Blackline creemos en el poder del diseño, es por eso que buscamos brindar una identidad visual fuerte para cualquier marca o negocio. Escuchamos atentamente a nuestros clientes y contamos con una firme comprensión en cuanto a técnicas y tendencias de diseño para ofrecer exactamente lo que quieres.</p>
+        </div>
+    </section>
+
+    <section id="servicios" class="mb-24">
+        <div class="px-6 text-center md:px-12">
+            <h1 class="mb-6 text-5xl font-bold tracking-tight">SERVICIOS</h1>
+            <h3 class="mb-8 text-3xl font-bold text-cyan-900">LO QUE NECESITAS PARA TU NEGOCIO O PROYECTO PERSONAL</h3>
+            <SCard />
+        </div>
+    </section>
+
+    <section id="productos" class="mb-24">
+        <div class="px-6 text-center md:px-12">
+            <h1 class="mb-6 text-5xl font-bold tracking-tight">PRODUCTOS</h1>
+            <h3 class="mb-8 text-3xl font-bold text-cyan-900">NUESTROS TRABAJOS EN VENTA</h3>
+
+        </div>
+    </section>
+
+    
+    <section id="contacto" class="mb-24">
+        <div class="px-6 text-center md:px-12">
+            <h1 class="mb-6 text-5xl font-bold tracking-tight">CONTACTO</h1>
+            <h3 class="mb-8 text-3xl font-bold text-cyan-900">NOSOTROS RESOLVEMOS TUS DUDAS</h3>
+            <p class="mb-4 font-extrabold text-xl  text-cyan-900">NOSOTROS RESOLVEMOS TUS DUDAS</p>
+            <WhatsappButton /> 
+        </div>
+        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d535.560334664185!2d-100.99367222823494!3d25.444744485555287!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x86886d3686160477%3A0xa646828e8b887e3a!2sBlackline%20Saltillo%20S.A%20de%20C.V!5e0!3m2!1ses!2smx!4v1712162680991!5m2!1ses!2smx" width="800" height="600" style="border:0;" allowfullscreen="" loading="lazy" referrerpolicy="no-referrer-when-downgrade" class="mx-auto shadow-md" />
+    </section>
 </Layout>
 
-<style>
-	main {
-		margin: auto;
-		padding: 1rem;
-		width: 800px;
-		max-width: calc(100% - 2rem);
-		color: white;
-		font-size: 20px;
-		line-height: 1.6;
-	}
 
-</style>
