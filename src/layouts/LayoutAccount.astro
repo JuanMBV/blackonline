@@ -13,7 +13,8 @@ const { title, description } = Astro.props;
 		<meta charset="UTF-8" />
 		<meta name="description" content={description} />
 		<meta name="viewport" content="width=device-width" />
-		<link rel="icon" type="image/svg+xml" href="/favicon.svg" />
+		<link href="/logo_blackline.png" rel="icon" media="(prefers-color-scheme: light)">
+		<link href="/favicon.svg" rel="icon" media="(prefers-color-scheme: dark)">
 		<meta name="generator" content={Astro.generator} />
 		<title>{title}</title>
 	</head>
@@ -28,3 +29,4 @@ const { title, description } = Astro.props;
 		background: #7d7d7d;
 	}
 </style>
+
