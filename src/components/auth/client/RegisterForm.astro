@@ -9,12 +9,12 @@
   <form action="" method="POST" class="px-6 flex flex-col lg:block">
 
     <div class="flex flex-col lg:flex-row gap-2 text-xl pb-5">
-      <input id="firstName" type="text" placeholder="Nombre(s)" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
-      <input id="lastName" type="text" placeholder="Apellido(s)" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="firstName" type="text" placeholder="Nombre(s)" required pattern="[A-Za-záéíóúÁÉÍÓÚ\s]+([ ]?[A-Za-záéíóúÁÉÍÓÚ\s]+)*" class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="lastName" type="text" placeholder="Apellido(s)" required pattern="[A-Za-záéíóúÁÉÍÓÚ\s]+([ ]?[A-Za-záéíóúÁÉÍÓÚ\s]+)*" class="border-2 border-gray-300 rounded-xl text-center px-5 ">
     </div>
 
     <div class="flex flex-col lg:flex-row gap-2 text-xl pb-5">
-      <input id="tel" type="tel" maxlength="10" placeholder="Telefono" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="tel" type="tel" maxlength="10" placeholder="Telefono" required pattern="[0-9]{10}" class="border-2 border-gray-300 rounded-xl text-center px-5 ">
       <input id="email" type="email" placeholder="Correo" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
     </div>
 
