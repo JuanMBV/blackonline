@@ -42,19 +42,21 @@
         return
       }
 
-      const key = import.meta.env.API_KEY_KICKBOX
+      const key = import.meta.env.API_TOKEN_MAILERCHECK
 
-      // API CaptainVerify: https://api.kickbox.com/v2/verify?email={email}&apikey={key}
+      // API mailercheck: https://app.mailercheck.com/api/check/single
 
-      fetch(`https://api.kickbox.com/v2/verify?email=${email.value}&apikey=${key}`, {
-        method: 'GET',
+      fetch(`https://app.mailercheck.com/api/check/single`, {
+        method: 'POST',
         headers: {
-          'Content-Type': 'application/json'
-        }
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${key}`
+        },
+        body: JSON.stringify({email: email.value})
       }).then(res => res.json())
       .then(data => {
         console.log(data)
-        if(data.result !== 'deliverable'){
+        if(data.status !== 'valid'){
           alert('Correo no valido')
           return
         }
@@ -71,7 +73,7 @@
       // API: https://api.blackonline.juanmbv.site
       // API LOCAL: http://localhost:8080
 
-      fetch('http://localhost:8080/auth/register/client', {
+      fetch('https://api.blackonline.juanmbv.site/auth/register/client', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
