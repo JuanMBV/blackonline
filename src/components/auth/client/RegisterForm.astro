@@ -60,7 +60,10 @@
           alert('Correo no valido')
           return
         }
+        console.log('Correo valido')
       })
+
+      return
       
       const data = {
         firstName: firstName.value,
@@ -73,7 +76,7 @@
       // API: https://api.blackonline.juanmbv.site
       // API LOCAL: http://localhost:8080
 
-      fetch('https://api.blackonline.juanmbv.site/auth/register/client', {
+      fetch('http://localhost:8080/auth/register/client', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
