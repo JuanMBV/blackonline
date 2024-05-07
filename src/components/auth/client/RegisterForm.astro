@@ -42,6 +42,24 @@
         return
       }
 
+      const key = import.meta.env.API_KEY_KICKBOX
+
+      // API CaptainVerify: https://api.kickbox.com/v2/verify?email={email}&apikey={key}
+
+      fetch(`https://api.kickbox.com/v2/verify?email=${email.value}&apikey=${key}`, {
+        method: 'GET',
+        headers: {
+          'Content-Type': 'application/json'
+        }
+      }).then(res => res.json())
+      .then(data => {
+        console.log(data)
+        if(data.result !== 'deliverable'){
+          alert('Correo no valido')
+          return
+        }
+      })
+      
       const data = {
         firstName: firstName.value,
         lastName: lastName.value,
@@ -50,11 +68,10 @@
         password: pass.value,
       }
 
-      console.log(data)
-
       // API: https://api.blackonline.juanmbv.site
+      // API LOCAL: http://localhost:8080
 
-      fetch('https://api.blackonline.juanmbv.site/auth/register/client', {
+      fetch('http://localhost:8080/auth/register/client', {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json'
