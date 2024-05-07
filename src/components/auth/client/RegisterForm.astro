@@ -27,6 +27,7 @@
   </form>
 
   <script>
+    
     document.querySelector('form').addEventListener('submit', e => {
       e.preventDefault()
       
@@ -41,8 +42,8 @@
         alert('Las contraseñas no coinciden')
         return
       }
-
-      const key = import.meta.env.API_TOKEN_MAILERCHECK
+      
+      const API_TOKEN_MAILERCHECK = "eyJ0eXAiOiJKV1QiLCJhbGciOiJSUzI1NiJ9.eyJhdWQiOiIxIiwianRpIjoiMDgwM2ZkZWZkYzg4MjQxMWQ1MjkzODMwMDNmMDc5MTkzYzIwY2I2YzllOTQ3ZWZhN2U0Yzg1ZTJiOTUyMWQwMGU5Y2JlYzcxYjZiNTU1YWMiLCJpYXQiOjE3MTUwNTA3NDUuMzUzMjQyLCJuYmYiOjE3MTUwNTA3NDUuMzUzMjQ1LCJleHAiOjE3NDY1ODY3NDUuMzQxNTk2LCJzdWIiOiIxMDQwMDEiLCJzY29wZXMiOltdfQ.j89UvjHV5138ow-uqSbdpCXweeWQJPpyFOhxidNrvyU0CTTyvb27KtJdzaWgEmccGZlM3VFhJ5HYkWHZIztucg"
 
       // API mailercheck: https://app.mailercheck.com/api/check/single
 
@@ -50,51 +51,47 @@
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
-          'Authorization': `Bearer ${key}`
+          'Authorization': `Bearer ${API_TOKEN_MAILERCHECK}`
         },
         body: JSON.stringify({email: email.value})
       }).then(res => res.json())
       .then(data => {
-        console.log(data)
         if(data.status !== 'valid'){
           alert('Correo no valido')
           return
         }
-        console.log('Correo valido')
-      })
 
-      return
-      
-      const data = {
-        firstName: firstName.value,
-        lastName: lastName.value,
-        phone: tel.value,
-        email: email.value,
-        password: pass.value,
-      }
-
-      // API: https://api.blackonline.juanmbv.site
-      // API LOCAL: http://localhost:8080
-
-      fetch('http://localhost:8080/auth/register/client', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json'
-        },
-        body: JSON.stringify(data)
-      })
-      .then(res => {
-        if(!res.ok) {
-          throw new Error('Ocurrio un error al registrar el cliente')
+        const dataAPI = {
+          firstName: firstName.value,
+          lastName: lastName.value,
+          phone: tel.value,
+          email: email.value,
+          password: pass.value,
         }
-        return res.json()
-      })
-      .then(data => {
-        localStorage.setItem('token', data.token)
-        window.location.href = '/'
-      })
-      .catch(error => {
-        console.error('Error:', error)
+
+        // API: https://api.blackonline.juanmbv.site
+        // API LOCAL: http://localhost:8080
+
+        fetch('https://api.blackonline.juanmbv.site/auth/register/client', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json'
+          },
+          body: JSON.stringify(dataAPI)
+        })
+        .then(res => {
+          if(!res.ok) {
+            throw new Error('Ocurrio un error al registrar el cliente')
+          }
+          return res.json()
+        })
+        .then(data => {
+          localStorage.setItem('token', data.token)
+          window.location.href = '/'
+        })
+        .catch(error => {
+          console.error('Error:', error)
+        })
       })
     })
   </script>
