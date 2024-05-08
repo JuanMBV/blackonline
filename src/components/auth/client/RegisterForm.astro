@@ -81,7 +81,7 @@
         })
         .then(res => {
           if(!res.ok) {
-            throw new Error('Ocurrio un error al registrar el cliente')
+            alert('Correo ya registrado')
           }
           return res.json()
         })
