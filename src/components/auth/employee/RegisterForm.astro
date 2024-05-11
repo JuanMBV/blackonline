@@ -1,0 +1,126 @@
+<section>
+  <h2 class="text-4xl text-center font-serif">REGISTRAR EMPLEADO</h2>
+  
+  <form class="px-7 pt-4">
+    <div class="flex flex-col lg:flex-row gap-2 text-xl pb-5">
+      <input id="firstName" type="text" placeholder="Nombre(s)" required pattern="[A-Za-záéíóúÁÉÍÓÚ\s]+([ ]?[A-Za-záéíóúÁÉÍÓÚ\s]+)*" class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="lastName" type="text" placeholder="Apellido(s)" required pattern="[A-Za-záéíóúÁÉÍÓÚ\s]+([ ]?[A-Za-záéíóúÁÉÍÓÚ\s]+)*" class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+    </div>
+
+    <div class="flex flex-col lg:flex-row text-xl pb-5">
+      <select name="gender" id="gender" required class="border-2 border-gray-300 rounded-xl text-center"></select>
+      <input id="tel" type="tel" maxlength="10" placeholder="Telefono" required pattern="[0-9]{10}" class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+    </div>
+
+    <div class="flex flex-col lg:flex-row text-xl pb-5">
+      <input id="dateborn" type="date" maxlength="10" placeholder="Fecha de Nacimiento" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <select name="role" id="role" required class="border-2 border-gray-300 rounded-xl text-center"></select>
+    </div>
+
+    <div class="flex flex-col lg:flex-row max-w-full text-xl gap-2 pb-5">
+      <input id="email" type="email" placeholder="Correo" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+      <input id="pass" minlength="8" maxlength="20" type="password" placeholder="Contraseña" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+    </div>
+
+    <div class="flex flex-col max-w-full text-xl gap-5 pb-5">
+      <input id="address" type="text" placeholder="Dirección" required class="border-2 border-gray-300 rounded-xl text-center px-5 ">
+    </div>
+    
+    <button type="submit" class="bg-black text-white text-xl rounded-xl py-2 px-56">Registrarse</button>
+  </form>
+</section>
+
+<script>
+  var roles = [];
+
+  const getGenders = () => {
+    const options = ["Genero","Masculino", "Femenino", "Otro"];
+
+    const select = document.getElementById("gender") as HTMLSelectElement;
+
+    for(var i = 0; i < options.length; i++) {
+      const option = document.createElement("option");
+      option.text = options[i];
+      select.add(option);
+    }
+  }
+
+  const getRoles = () => {
+    const select = document.getElementById("role") as HTMLSelectElement;
+    const option = document.createElement("option");
+    option.text = "Rol";
+    select.add(option);
+
+    fetch('https://api.blackonline.juanmbv.site/api/roles', {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => {
+      if(!res.ok){
+        throw new Error('Error al obtener los roles');
+      } else {
+        return res.json();
+      }
+    }).then(data => {
+      data.forEach(role => {
+        const option = document.createElement("option");
+        option.text = role.name;
+        select.add(option);        
+      })
+      roles = data;
+    }).catch(error => {
+      console.error(error)
+    })
+  } 
+
+
+  getGenders()
+  getRoles()
+
+  document.querySelector('form').addEventListener('submit', (e) => {
+    e.preventDefault();
+
+    const firstName = document.getElementById('firstName') as HTMLInputElement;
+    const lastName = document.getElementById('lastName') as HTMLInputElement;
+    const gender = document.getElementById('gender') as HTMLSelectElement;
+    const tel = document.getElementById('tel') as HTMLInputElement;
+    const dateborn = document.getElementById('dateborn') as HTMLInputElement;
+    const role = document.getElementById('role') as HTMLSelectElement;
+    const email = document.getElementById('email') as HTMLInputElement;
+    const pass = document.getElementById('pass') as HTMLInputElement;
+    const address = document.getElementById('address') as HTMLInputElement;
+
+    const rol = roles.find(r => r.name === role.value)
+    
+    const data = {
+      firstName: firstName.value,
+      lastName: lastName.value,
+      gender: gender.value,
+      phone: tel.value,
+      dateOfBirth: dateborn.value,
+      role: rol,
+      email: email.value,
+      password: pass.value,
+      address: address.value
+    }
+
+    fetch('https://api.blackonline.juanmbv.site/auth/register/employee', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(res => {
+      if(!res.ok){
+        alert('Error al registrar empleado')
+      }
+      return res.json()
+    }).then(data => {
+      localStorage.setItem('token', data.token)
+      location.href = '/employee/console/inventory'
+    })
+
+  })
+
+</script>
