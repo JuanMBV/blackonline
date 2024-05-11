@@ -1,3 +1,10 @@
-<section>
-  <img src="/logo_blackline_black.png" alt="Logo Blackline">
-</section>
+
+<main class="flex flex-col items-center justify-center min-h-screen">
+  <div class="flex flex-col bg-white/70 max-h-[480px] max-w-5xl">
+    <section class="max-h-full max-w-full py-6 px-8 flex flex-col items-center justify-center">
+      <img src="/logo_blackline_black.png" alt="Logo Blackline" class="h-28 p-4">
+      <slot />
+    </section>
+  </div>
+  
+</main>
