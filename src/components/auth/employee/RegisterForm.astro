@@ -54,7 +54,8 @@
     fetch('https://api.blackonline.juanmbv.site/api/roles', {
       method: 'GET',
       headers: {
-        'Content-Type': 'application/json'
+        'Content-Type': 'application/json',
+        'Authorization': `Bearer ${localStorage.getItem('token')}`
       }
     }).then(res => {
       if(!res.ok){
@@ -74,7 +75,24 @@
     })
   } 
 
+  const checkToken = () => {
+    if(!localStorage.getItem('token')){
+      location.href = '/employee/login'
+    }
 
+    fetch('https://api.blackonline.juanmbv.site/jwt/validate-token', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      }, body: JSON.stringify({token: localStorage.getItem('token')})
+    }).then(res => {
+      if(!res.ok){
+        location.href = '/employee/login'
+      }
+    })
+  }
+
+  checkToken()
   getGenders()
   getRoles()
 
