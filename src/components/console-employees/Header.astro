@@ -1,0 +1,90 @@
+---
+const location = Astro.request.url.split('/').pop();
+
+const ROUTES = [
+  {
+    name: 'Inventario',
+    route: '/employee/console/inventory',
+    color: location === 'inventory' ? 'text-[#6FD0DD]' : 'text-white hover:text-[#6FD0DD]'
+  },
+  {
+    name: 'Agregar material',
+    route: '/employee/console/add-material',
+    color: location === 'add-material' ? 'text-[#6FD0DD]' : 'text-white hover:text-[#6FD0DD]'
+  },
+  {
+    name: 'Pedidos',
+    route: '/employee/console/orders',
+    color: location === 'orders' ? 'text-[#6FD0DD]' : 'text-white hover:text-[#6FD0DD]'
+  }
+];
+
+const SIDE_MENU = [
+  {
+    name: "Información del empleado",
+    route: "#",
+    role: [
+      "admin",
+      "employee"
+    ]
+  },
+  {
+    name: "Registrar un empleado",
+    route: "/employee/register",
+    role: [
+      "admin"
+    ]
+  },
+  {
+    name: "Cerrar sesión",
+    route: "/employee/login",
+    role: [
+      "admin",
+      "employee"
+    ]
+  }
+];
+
+---
+
+<header class="bg-black max-h-16 flex flex-row items-center justify-between text-white font-semibold px-4 py-2 text-2xl">
+  <img src="/logo_bl.png" alt="Logo de Blackline" class="max-h-16 p-2">
+  <nav class="flex flex-row gap-20">
+    {
+      ROUTES.map(({ name, route, color }) => (
+        <a href={ route } class={ color }>{ name }</a>
+      ))
+    }
+  </nav>
+  <div class="relative inline-block text-left">
+    <div>
+      <button type="button" class="px-2 hover:text-[#6FD0DD]" id="menu-button" aria-expanded="true" aria-haspopup="true">
+        Usuario | Rol
+      </button>
+    </div>
+    <div id="coso" class="hidden absolute right-0 z-10 mt-5 w-80 origin-top-right rounded-md bg-[#DDDDDD] shadow-lg ring-1 ring-black ring-opacity-5 focus:outline-none" role="menu" aria-orientation="vertical" aria-labelledby="menu-button" tabindex="-1">
+      <nav class="flex flex-col gap-4 items-end p-4">
+        {
+          SIDE_MENU.map(({name, route, role}) => (
+            <a href={route} class="text-black">{name}</a>
+          ))
+          
+        }
+      </nav>
+      
+    </div>
+  </div>
+  
+</header>
+
+
+
+<script>
+  const modal = document.querySelector('dialog');
+  const button = document.querySelector('button');
+  const coso = document.getElementById('coso');
+
+  button.addEventListener('click', () => {
+    coso.classList.toggle('hidden');
+  })
+</script>
