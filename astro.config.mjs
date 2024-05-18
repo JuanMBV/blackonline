@@ -2,9 +2,18 @@ import { defineConfig } from 'astro/config';
 import amplify from 'astro-aws-amplify';
 import tailwind from "@astrojs/tailwind";
 
+import vercel from "@astrojs/vercel/serverless";
+
 // https://astro.build/config
 export default defineConfig({
-  integrations: [tailwind()],
+  integrations: [tailwind()]
   // output: 'server',
   // adapter: amplify()
+  ,
+  output: "server",
+  adapter: vercel({
+    webAnalytics: {
+      enabled: true,
+    },
+  }),
 });
