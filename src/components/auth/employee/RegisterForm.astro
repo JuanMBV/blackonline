@@ -34,7 +34,7 @@
   var roles = [];
 
   const getGenders = () => {
-    const options = ["Genero","Masculino", "Femenino", "Otro"];
+    const options = ["Genero","Masculino", "Femenino"];
 
     const select = document.getElementById("gender") as HTMLSelectElement;
 
@@ -51,7 +51,7 @@
     option.text = "Rol";
     select.add(option);
 
-    fetch('https://api.blackonline.juanmbv.site/api/roles', {
+    fetch('http://localhost:8080/api/roles', {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json',
@@ -80,7 +80,7 @@
       location.href = '/employee/login'
     }
 
-    fetch('https://api.blackonline.juanmbv.site/jwt/validate-token', {
+    fetch('http://localhost:8080/jwt/validate-token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -123,7 +123,7 @@
       address: address.value
     }
 
-    fetch('https://api.blackonline.juanmbv.site/auth/register/employee', {
+    fetch('http://localhost:8080/auth/register/employee', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
