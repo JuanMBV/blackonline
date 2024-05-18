@@ -1,0 +1,45 @@
+---
+const res = await fetch('http://localhost:8080/api/materials', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json',
+  },
+})
+
+const MATERIALS = await res.json()
+
+console.log(MATERIALS)
+---
+
+<div class="w-full max-h-2">
+  <div class="relative overflow-y-auto rounded-2xl">
+    <table class="w-full text-center">
+      <thead class="bg-[#36304A] py-4">
+        <tr class="text-white">
+          <th># Material</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Cantidad</th>
+          <th>m^2</th>
+          <th>Litros</th>
+          <th>Costo</th>
+        </tr>
+      </thead>
+      <tbody class="relative overflow-y-scroll h-20 w-2">
+        {
+          MATERIALS.map(material => (
+            <tr class="odd:bg-[#DFDFDF] even:bg-[#BDBBC6]">
+              <td>{material.material_id}</td>
+              <td>{material.materialPurchase.name}</td>
+              <td>{material.materialPurchase.type}</td>
+              <td>{material.materialPurchase.quantity}</td>
+              <td>{material.materialPurchase.squareMeters}</td>
+              <td>{material.materialPurchase.liters ? 0 : "NA"}</td>
+              <td>{material.price}</td>
+            </tr>
+          ))
+        }
+      </tbody>
+    </table>
+  </div>
+</div>
