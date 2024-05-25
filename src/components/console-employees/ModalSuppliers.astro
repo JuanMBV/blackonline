@@ -1,0 +1,73 @@
+<dialog id="modalAddSupplier" class="w-1/2 h-4/6 border-black border-4 rounded-2xl text-2xl font-semibold">
+  <div class="flex flex-col items-center justify-center mt-10 gap-4">
+    <h1 class="text-3xl font-semibold pb-8">Agregar Proveedor</h1>
+  
+    <section class="flex flex-col justify-center items-center gap-4">
+      <label>
+        Nombre:
+        <input id="name" required type="text" placeholder="Nombre" pattern="[A-Za-záéíóúÁÉÍÓÚ\s]+([ ]?[A-Za-záéíóúÁÉÍÓÚ\s]+)*" class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+
+      <label>
+        Teléfono:
+        <input id="phone" required type="tel" maxlength="10" placeholder="Telefono" pattern="[0-9]{10}" class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+
+      <label>
+        Correo:
+        <input id="email" required type="email" placeholder="Correo" class="bg-[#D9D9D9] rounded-lg ps-2 ms-4">
+      </label>
+
+      <label>
+        Dirección:
+        <input id="address" required type="text" placeholder="Dirección" class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+    </section>
+    <div class="pt-4">
+      <button id="btnCloseModal" class="py-1 px-10 rounded-full text-white border-2 border-black bg-red-500 hover:bg-red-800">Cancelar</button>
+      <button id="btnAddSupplier" class="py-1 px-10 rounded-full text-white border-2 border-black bg-green-500 hover:bg-green-800">Guardar</button>
+    </div>          
+  </div>
+  
+</dialog>
+
+<script>
+  document.getElementById('btnAddSupplier').addEventListener('click', () => {
+    const name = document.getElementById('name') as HTMLInputElement;
+    const phone = document.getElementById('phone') as HTMLInputElement;
+    const email = document.getElementById('email') as HTMLInputElement;
+    const address = document.getElementById('address') as HTMLInputElement;
+
+    if(name.value === '' || phone.value === '' || email.value === '' || address.value === ''){
+      alert('Por favor llene todos los campos')
+      return
+    }
+
+    const data = {
+      name: name.value,
+      phone: phone.value,
+      email: email.value,
+      address: address.value
+    }
+
+    fetch('http://localhost:8080/api/suppliers', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(data)
+    }).then(res => {
+      if(!res.ok) {
+        throw new Error('Ocurrió un error al agregar el proveedor')
+      }
+      return res.json()
+    }).then(data => {
+      alert(`Proveedor ${data.name} agregado correctamente`)
+      const modal = document.getElementById('modalAddSupplier') as HTMLDialogElement;
+      modal.close()
+      location.reload()
+    }).catch(err => {
+      alert(err)
+    })
+  })
+</script>

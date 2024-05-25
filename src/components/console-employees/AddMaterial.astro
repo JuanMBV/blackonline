@@ -1,0 +1,214 @@
+---
+
+import ModalSuppliers from './ModalSuppliers.astro';
+
+const SUPPLIERS = await fetch('http://localhost:8080/api/suppliers', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}).then(res => {
+  if(!res.ok){
+    throw new Error('Error al obtener los proveedores');
+    // Aqui hay que redirigir a una pagina de error
+  }
+  return res.json();
+}).then(data => {
+  return data
+})
+
+const MATERIALS = await fetch('http://localhost:8080/api/material-purchases', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application/json'
+  }
+}).then(res => res.json())
+---
+
+<ModalSuppliers /> 
+
+<main class="text-2xl">
+  <form class="flex flex-col justify-center items-center min-h-[90vh] gap-10">
+    <div class="flex flex-row items-left gap-4">
+      <label class="font-semibold">
+        Seleccionar proveedor:
+        <select id="supplierId" required class="bg-[#D9D9D9] rounded-lg ps-2">
+          <option></option>
+          {
+            SUPPLIERS.map(({ supplier_id, name }) => (
+              <option value={ supplier_id }>{ name }</option>
+            ))
+          }
+        </select>
+      </label>
+      <button id="btnSupplier" class="rounded-md border-2 border-black bg-[#D9D9D9] hover:bg-slate-400">
+        <img src="/add.png" class="w-8" alt="Icon Add">
+      </button>
+    </div>
+
+    <section class="grid grid-cols-2 gap-10">
+      <article class="flex flex-col gap-8">
+        <datalist id="materials">
+          {
+            MATERIALS.map(({ name }) => (
+              <option value={ name }>{ name }</option>
+            ))
+          }
+        </datalist>
+        
+        <label class="font-semibold">
+          Nombre:
+          <input id="materialName" list="materials" name="materials" type="text" required class="bg-[#D9D9D9] rounded-lg ps-2">
+        </label>
+
+        <label class="font-semibold">
+          Cantidad:
+          <input id="materialQuantity" type="number" required class="bg-[#D9D9D9] rounded-lg ps-2">
+        </label>
+  
+        <label class="font-semibold">
+          Litros:
+          <input id="materialLiters" type="number" required class="bg-[#D9D9D9] rounded-lg ps-2">
+        </label>
+  
+        <label class="font-semibold">
+          Costo Papelería:
+          <input id="materialPrice" type="number" required class="bg-[#D9D9D9] rounded-lg ps-2">
+        </label>
+      </article>
+
+      <article class="flex flex-col gap-8">
+        <label class="font-semibold">
+          Tipo:
+          <input id="materialType" type="text" required class="bg-[#D9D9D9] rounded-lg ps-2">
+        </label>
+    
+        <label class="font-semibold">
+          m^2:
+          <input id="materialM2" type="number" required class="bg-[#D9D9D9] rounded-lg ps-2">
+        </label>
+
+        <label class="font-semibold">
+          Costo c/u:
+          <input id="materialCost" type="number" required class="bg-[#D9D9D9] rounded-lg ps-2">
+        </label>
+
+        <label class="font-semibold">
+          Costo total:
+          <input id="materialTotalCost" type="number" required value="0" readonly class="bg-[#D9D9D9] rounded-lg ps-2">
+        </label>
+      </article>
+    </section>
+
+    <div class="flex flex-row gap-8">
+      <button type="reset" class="py-1 px-10 rounded-full text-white border-2 border-black bg-red-500 hover:bg-red-800">Cancelar</button>
+      <button id="btnAddMaterial" type="submit" class="py-1 px-10 rounded-full text-white border-2 border-black bg-green-500 hover:bg-green-800">Guardar</button>
+    </div>
+  </form>
+</main>
+
+<script>
+  const supplier = async () => {
+    const modalAddSupplier = document.getElementById('modalAddSupplier') as HTMLDialogElement;
+    const btnAddSupplier = document.getElementById('btnSupplier') as HTMLButtonElement;
+    const btnCloseModal = document.getElementById('btnCloseModal') as HTMLButtonElement;
+
+    btnAddSupplier.addEventListener('click', () => {
+      modalAddSupplier.showModal();
+    })
+
+    btnCloseModal.addEventListener('click', () => {
+      modalAddSupplier.close();
+    })
+  }
+
+  await supplier(); 
+
+  const setTotalCost = () => {
+    const quantity = document.getElementById('materialQuantity') as HTMLInputElement;
+    const cost = document.getElementById('materialCost') as HTMLInputElement;
+    const totalCost = document.getElementById('materialTotalCost') as HTMLInputElement;
+
+    const result = (quantity.valueAsNumber * cost.valueAsNumber).toFixed(0);
+
+    if(result === 'NaN'){
+      totalCost.value = "0";
+      return;
+    }
+
+    totalCost.value = result;
+  }
+
+  document.getElementById('materialQuantity').addEventListener('input', setTotalCost);
+  document.getElementById('materialCost').addEventListener('input', setTotalCost);
+
+  document.querySelector('form').addEventListener('submit', async (e) => {
+    e.preventDefault();
+
+    const supplierId = document.getElementById('supplierId') as HTMLSelectElement;
+    const name = document.getElementById('materialName') as HTMLInputElement;
+    const quantity = document.getElementById('materialQuantity') as HTMLInputElement;
+    const liters = document.getElementById('materialLiters') as HTMLInputElement;
+    const price = document.getElementById('materialPrice') as HTMLInputElement;
+    const type = document.getElementById('materialType') as HTMLInputElement;
+    const m2 = document.getElementById('materialM2') as HTMLInputElement;
+    const cost = document.getElementById('materialCost') as HTMLInputElement;
+    const totalCost = document.getElementById('materialTotalCost') as HTMLInputElement;
+
+    const supplier = await fetch(`http://localhost:8080/api/suppliers/${supplierId.value}`, {
+      method: 'GET',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(res => res.json());
+
+    const dataMaterialPurchase = {
+      name: name.value,
+      type: type.value,
+      quantity: quantity.value,
+      squareMeters: m2.value,
+      liters: liters.value,
+      cost: cost.value,
+      totalCost: totalCost.value,
+      supplier: supplier
+    }
+
+    const materialPurchase = await fetch('http://localhost:8080/api/material-purchases', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataMaterialPurchase)
+    }).then(res => {
+      if(!res.ok){
+        throw new Error('Error al guardar el material');
+      }
+      return res.json();
+    })
+
+    const dataMaterial = {
+      price: price.value,
+      materialPurchase: materialPurchase
+    }
+
+
+    fetch('http://localhost:8080/api/materials', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json'
+      },
+      body: JSON.stringify(dataMaterial)
+    }).then(res => {
+      if(!res.ok){
+        throw new Error('Error al guardar el material');
+      }
+      return res.json();
+    }).then(data => {
+      alert('Material guardado con exito')
+      location.reload();
+    })
+
+  })
+
+  
+</script>
