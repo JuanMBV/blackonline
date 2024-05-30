@@ -1,0 +1,184 @@
+---
+const techniques = await fetch('https://api.blackonline.juanmbv.site/api/techniques').then(res => res.json())
+---
+
+<dialog id="modalQuote" class="w-3/4 h-3/4 border-black border-4 rounded-2xl text-2xl font-semibold">
+  <div class="flex flex-col items-center justify-center mt-10 gap-4">
+    <h1 class="text-3xl font-semibold">Crear cotización</h1>
+    <p class="text-xl font-normal pb-8">Si necesita hacer un pedido, inicie sesión antes!!</p>
+  
+    <section class="grid grid-cols-2 justify-center items-center gap-4">
+      <div class="flex flex-col gap-4">
+        <div class="flex flex-row gap-4">
+          <h2>Servicio</h1>
+          <select id="selectTechnique" class="text-xl font-normal border-2 border-black rounded-md">
+            <option value=""></option>
+            {
+              techniques.map(({ technique_id, name }) => (
+                <option value={technique_id}>{name}</option>
+              ))
+            }
+          </select>
+        </div>
+        <label>
+          Width:
+          <input type="text" id="Width" class="border-2 border-black rounded-md ps-2">
+        </label>
+
+        <label>
+          Height:
+          <input type="text" id="height" class="border-2 border-black rounded-md ps-2">
+        </label>
+
+        <div class="flex flex-row gap-4"> 
+          <label>
+            Total:
+            <input type="text" id="totalPrice" readonly value="$0" class="border-2 border-black rounded-md ps-2 w-20">
+          </label>
+  
+          <label>
+            Adelanto:
+            <input type="text" id="advancePayment" readonly value="$0" class="border-2 border-black rounded-md ps-2 w-20">
+          </label>
+        </div>
+        
+      </div>
+         
+      <div class="flex flex-col gap-3">
+        <label class="flex flex-row justify-center items-center gap-3">
+          Description:
+          <textarea id="" class="border-black border-2 rounded-md min-h-24 h-auto min-w-72 text-xl font-normal"></textarea>
+        </label>
+
+        <label>
+          Referencia:
+          <input type="text" id="reference" class="border-2 border-black rounded-md ps-2">
+        </label>
+
+        <span id="card"></span>
+      </div>
+      
+      
+    </section>
+    <div class="pt-4">
+      <button id="btnCloseModalQuote" class="py-1 px-10 rounded-full text-white border-2 border-black bg-red-500 hover:bg-red-800">Cancelar</button>
+      <button id="btnAddQuote" class="py-1 px-10 rounded-full text-white border-2 border-black bg-green-500 hover:bg-green-800">Enviar</button>
+    </div>          
+  </div>
+</dialog>
+
+<script>
+  if(!localStorage.getItem('token')) {
+    document.getElementById('btnAddQuote').classList.add('hidden')
+  }else{
+    document.getElementById('btnAddQuote').classList.remove('hidden')
+    const card = document.getElementById('card') as HTMLSpanElement;
+    card.innerHTML = ' Tarjeta a depositar: 1234 1234 1234 1234'
+  }
+
+  var techniqueId = ''
+  var totalPrice = 0
+  const selectTechnique = document.getElementById('selectTechnique') as HTMLSelectElement;
+  const totalPriceInput = document.getElementById('totalPrice') as HTMLInputElement;
+  const advancePaymentInput = document.getElementById('advancePayment') as HTMLInputElement;
+
+  selectTechnique.addEventListener('input', async () => {
+    techniqueId = selectTechnique.value
+    totalPrice = await fetch(`https://api.blackonline.juanmbv.site/api/techniques/${techniqueId}`).then(res => res.json()).then(data => data.price)
+    totalPriceInput.value = totalPrice.toFixed(0)
+    advancePaymentInput.value = (totalPrice / 2).toFixed(0)
+  })
+
+  document.getElementById('btnAddQuote').addEventListener('click', async () => {
+    const width = (document.getElementById('width') as HTMLInputElement).value
+    const height = (document.getElementById('height') as HTMLInputElement).value
+    const description = (document.querySelector('textarea') as HTMLTextAreaElement).value
+    const reference = (document.getElementById('reference') as HTMLInputElement).value
+
+    if(techniqueId === '' || width === '' || height === '' || description === '' || reference === '' || totalPriceInput.value === '$0' || advancePaymentInput.value === '$0') {
+      alert('Faltan datos por ingresar')
+      return
+    }
+
+    const technique = await fetch(`https://api.blackonline.juanmbv.site/api/techniques/${techniqueId}`).then(res => res.json())
+
+    const work = {
+      name: technique.name,
+      description: description,
+      width: width,
+      height: height,
+      technique: technique
+    }
+
+    const workId = await fetch('https://api.blackonline.juanmbv.site/api/works', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(work)
+    }).then(res => {
+      if(!res.ok){
+        alert('Error al crear la cotización')
+        throw new Error('Error al crear la cotización')
+      }
+      return res.json()
+    }).then(data => data.work_id)
+
+    const urlParams = new URLSearchParams(window.location.search);
+    const clientId = urlParams.get('id')
+
+    const quote = {
+      totalPrice: totalPriceInput.value,
+      advancePayment: advancePaymentInput.value,
+      clientId: clientId,
+      workId: workId
+    }
+
+    const quoteId = await fetch('https://api.blackonline.juanmbv.site/api/quotes', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(quote)
+    }).then(res => {
+      if(!res.ok){
+        alert('Error al crear la cotización')
+        throw new Error('Error al crear la cotización')
+      }
+      return res.json()
+    }).then(data => data.quote_id)
+
+    const currentDate = new Date();
+    const day = currentDate.getDate()
+    const month = currentDate.getMonth() + 1
+    const year = currentDate.getFullYear()
+
+    const dayFormatted = day < 10 ? `0${day}` : day;
+    const monthFormatted = month < 10 ? `0${month}` : month;
+    
+    const date = `${year}-${monthFormatted}-${dayFormatted}`
+
+    const order = {
+      deliveryDate: date,
+      reference: reference,
+      status: "PENDING",
+      quoteId: quoteId
+    }
+
+    await fetch('https://api.blackonline.juanmbv.site/api/orders', {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(order)
+    }).then(res => {
+      if(!res.ok){
+        alert('Error al crear la cotización')
+        throw new Error('Error al crear la cotización')
+      }
+      alert('Cotización creada con éxito')
+      location.reload()
+      return res.json()
+    })
+  })
+</script>
