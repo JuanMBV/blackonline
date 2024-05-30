@@ -132,7 +132,7 @@ initTWE({ Collapse, Ripple });
                   logoutButton.className = "bg-cyan-800 hover:bg-cyan-600 transition-colors px-3 py-1 rounded-full text-white/80"
                   logoutButton.addEventListener("click", function() {
                     localStorage.removeItem("token");
-                    location.reload();
+                    location.href = "/";
                   });
                   botonContainer.appendChild(logoutButton);
                   
@@ -142,7 +142,7 @@ initTWE({ Collapse, Ripple });
                   logoutButton.className = "bg-cyan-800 hover:bg-cyan-600 transition-colors px-3 py-1 rounded-full text-white/80"
                   logoutButton.addEventListener("click", function() {
                     localStorage.removeItem("token");
-                    location.reload();
+                    location.href = "/";
                   });
                   botonContainer.appendChild(logoutButton);
                 }
