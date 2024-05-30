@@ -6,7 +6,7 @@ const id = Astro.url.searchParams.get('id');
 let employee
 
 if(id){
-  employee = await fetch(`http://localhost:8080/api/employees/${id}`,{
+  employee = await fetch(`https://api.blackonline.juanmbv.site/api/employees/${id}`,{
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -114,7 +114,7 @@ const SIDE_MENU = [
       location.href = '/employee/login'
     }
 
-    fetch('http://localhost:8080/jwt/validate-token', {
+    fetch('https://api.blackonline.juanmbv.site/jwt/validate-token', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
