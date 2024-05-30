@@ -2,7 +2,7 @@
 
 import ModalSuppliers from './ModalSuppliers.astro';
 
-const SUPPLIERS = await fetch('http://localhost:8080/api/suppliers', {
+const SUPPLIERS = await fetch('https://api.blackonline.juanmbv.site/api/suppliers', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -17,7 +17,7 @@ const SUPPLIERS = await fetch('http://localhost:8080/api/suppliers', {
   return data
 })
 
-const MATERIALS = await fetch('http://localhost:8080/api/material-purchases', {
+const MATERIALS = await fetch('https://api.blackonline.juanmbv.site/api/material-purchases', {
   method: 'GET',
   headers: {
     'Content-Type': 'application/json'
@@ -155,7 +155,7 @@ const MATERIALS = await fetch('http://localhost:8080/api/material-purchases', {
     const cost = document.getElementById('materialCost') as HTMLInputElement;
     const totalCost = document.getElementById('materialTotalCost') as HTMLInputElement;
 
-    const supplier = await fetch(`http://localhost:8080/api/suppliers/${supplierId.value}`, {
+    const supplier = await fetch(`https://api.blackonline.juanmbv.site/api/suppliers/${supplierId.value}`, {
       method: 'GET',
       headers: {
         'Content-Type': 'application/json'
@@ -173,7 +173,7 @@ const MATERIALS = await fetch('http://localhost:8080/api/material-purchases', {
       supplier: supplier
     }
 
-    const materialPurchase = await fetch('http://localhost:8080/api/material-purchases', {
+    const materialPurchase = await fetch('https://api.blackonline.juanmbv.site/api/material-purchases', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
@@ -192,7 +192,7 @@ const MATERIALS = await fetch('http://localhost:8080/api/material-purchases', {
     }
 
 
-    fetch('http://localhost:8080/api/materials', {
+    fetch('https://api.blackonline.juanmbv.site/api/materials', {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
