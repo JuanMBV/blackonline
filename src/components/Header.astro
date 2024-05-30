@@ -10,14 +10,14 @@
 initTWE({ Collapse, Ripple });
 </script>
 
-<header class="top-0 sticky z-[1000]">
+<header class="top-0 sticky z-[1000] px-4 py-2 bg-black text-2xl">
     <nav
       class="relative flex w-full items-center justify-between py-2 shadow-md bg-black lg:flex-wrap lg:justify-start"
       data-twe-navbar-ref>
       <div class="flex w-full flex-wrap items-center justify-between px-3">
         <div class="flex items-center">
           <button
-            class="border-0 bg-transparent px-2 text-xl leading-none transition-shadow duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white lg:hidden" 
+            class="border-0 bg-transparent px-2 text-xl leading-none transition-shadow duration-150 ease-in-out hover:text-neutral-700 focus:text-neutral-700 dark:hover:text-white dark:focus:text-white lg:hidden"
             type="button"
             data-twe-collapse-init
             data-twe-target="#navbarSupportedContentX"
@@ -81,7 +81,7 @@ initTWE({ Collapse, Ripple });
                 >Servicios</a
               >
             </li>
-            <li class="mb-4 lg:mb-0 lg:pe-2" data-twe-nav-item-ref>
+            <!-- <li class="mb-4 lg:mb-0 lg:pe-2" data-twe-nav-item-ref>
                 <a
                   class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2"
                   href="#productos"
@@ -90,7 +90,7 @@ initTWE({ Collapse, Ripple });
                   data-twe-ripple-color="light"
                   >Productos</a
                 >
-              </li>
+              </li> -->
               <li class="mb-4 lg:mb-0 lg:pe-2" data-twe-nav-item-ref>
                 <a
                   class="block text-black/60 transition duration-200 hover:text-black/80 hover:ease-in-out focus:text-black/80 active:text-black/80 motion-reduce:transition-none dark:text-white/60 dark:hover:text-white/80 dark:focus:text-white/80 dark:active:text-white/80 lg:px-2"
@@ -114,6 +114,7 @@ initTWE({ Collapse, Ripple });
               loginButton.className = "bg-cyan-800 hover:bg-cyan-600 transition-colors px-3 py-1 rounded-full text-white/80";
               loginButton.href = "/client/login";
               botonContainer.appendChild(loginButton);
+              location.href = "/";
             }else{
               const data = {
                 token: token
@@ -149,8 +150,23 @@ initTWE({ Collapse, Ripple });
               });
             }
           </script>
+          <button id="btnQuote" class="bg-white rounded-full px-3 py-1 me-2">Cotización</button>
           <div id="botonContainer"></div>
         </div>
       </div>
     </nav>
   </header>
+
+<script>
+  const btnQuote = document.getElementById('btnQuote') as HTMLButtonElement;
+  const btnCloseModalQuote = document.getElementById('btnCloseModalQuote') as HTMLButtonElement;
+  const modalQuote = document.getElementById('modalQuote') as HTMLDialogElement;
+
+  btnQuote.addEventListener("click", function() {
+    modalQuote.showModal();
+  });
+
+  btnCloseModalQuote.addEventListener("click", function() {
+    modalQuote.close();
+  });
+</script>
