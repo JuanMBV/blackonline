@@ -48,7 +48,9 @@
     })
     .then(data => {
       localStorage.setItem('token', data.token)
-      window.location.href = '/'
+      const user_id = data.id
+
+      window.location.href = '/?id='+user_id
     })
     .catch(error => {
       console.error('Error:', error)
