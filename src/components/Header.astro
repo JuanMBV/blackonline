@@ -130,6 +130,8 @@ initTWE({ Collapse, Ripple });
                   var logoutButton = document.createElement("button");
                   logoutButton.textContent = "Cerrar Sesión";
                   logoutButton.className = "bg-cyan-800 hover:bg-cyan-600 transition-colors px-3 py-1 rounded-full text-white/80"
+                  localStorage.removeItem("token");
+
                   logoutButton.addEventListener("click", function() {
                     localStorage.removeItem("token");
                     location.href = "/";
