@@ -1,0 +1,25 @@
+---
+import Order from "./Order.astro"
+
+interface Props {
+  title: string,
+  list: any[]
+}
+
+const { title, list } = Astro.props;
+
+
+---
+
+<section class="bg-[#EEEEEE] w-72 min-h-full rounded-lg">
+  <header class="flex flex-col justify-center items-start bg-[#BBBBBB] h-14 px-3 rounded-t-lg">
+    <span class="text-2xl font-semibold">{ title } { list.length }</span>
+  </header>
+  {
+    list.map(order => (
+      <Order order={ order }/>
+    ))
+  }
+  
+  
+</section>

@@ -1,0 +1,85 @@
+---
+interface Props{
+  work: any;
+}
+
+const { work } = Astro.props;
+
+const measures = [
+  {
+    name: "Longitud",
+    value: work._long
+  },
+  {
+    name: "Altura",
+    value: work.height
+  },
+  {
+    name: "Ancho",
+    value: work.width
+  },
+  {
+    name: "Diámetro",
+    value: work.diameter
+  },
+  {
+    name: "Circunferencia",
+    value: work.circumference
+  },
+  {
+    name: "Espesor",
+    value: work.thickness
+  }
+];
+
+const technique = work.technique;
+
+const materials = work.technique.materials;
+---
+
+<dialog id="modalWork" class="w-1/2 h-4/5 border-black border-4 rounded-2xl text-2xl font-semibold">
+  <div class="flex flex-col items-center justify-center mt-10 gap-4">
+    <h1 class="text-3xl font-semibold pb-8">Información del trabajo</h1>
+  
+    <section class="flex flex-col justify-center items-center gap-4">
+      <label>
+        Trabajo:
+        <input id="work" type="text" readonly value={ work.name } class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+
+      <label>
+        Descripción del trabajo:
+        <input type="text" readonly value={ work.description } class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+
+      {
+        measures.map(({ name, value }) => (
+          value !== null &&
+          <label>
+            { name }:
+            <input type="text" readonly value={ value } class="bg-[#D9D9D9] rounded-lg ps-2">
+          </label>
+        ))
+      }
+
+      <label>
+        Técnica:
+        <input type="text" readonly value={ technique.name } class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+
+      {
+        materials.map(({ materialPurchase }) => (
+          <label>
+            Material:
+            <input type="text" readonly value={ materialPurchase.name } class="bg-[#D9D9D9] rounded-lg ps-2">
+          </label>
+        ))
+      }
+      
+    </section>
+    <div class="pt-4">
+      <button id="closeModalWork" class="py-1 px-10 rounded-full text-black underline">Cerrar</button>
+    </div>          
+  </div>
+  
+</dialog>

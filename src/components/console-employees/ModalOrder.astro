@@ -1,0 +1,106 @@
+---
+interface Props{
+  id: string,
+  status: string,
+  name: string,
+  phone: string,
+  date: string,
+  reference: string,
+  work: any[],
+}
+
+const { id, status, name, phone, date, reference, work } = Astro.props;
+
+---
+
+<dialog id="modal" class="w-1/2 h-4/6 border-black border-4 rounded-2xl text-2xl font-semibold">
+  <div class="flex flex-col items-center justify-center mt-10 gap-4">
+    <h1 class="text-3xl font-semibold pb-8">Pedido</h1>
+  
+    <section class="flex flex-col justify-center items-center gap-4">
+      <label>
+        Nombre del cliente:
+        <input id="name" type="text" readonly value={ name } class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+
+      <label>
+        Teléfono del cliente:
+        <input id="phone" type="tel" readonly value={ phone } class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+
+      <label>
+        Fecha de cotización:
+        <input id="date" type="text" readonly value={ date } class="bg-[#D9D9D9] rounded-lg ps-2">
+      </label>
+
+      <div class="flex flex-row gap-2 ps-14">
+        <div>
+          <label>Trabajo:</label>
+          <button id="viewWork" class="bg-[#D9D9D9] rounded-lg border-2 border-black hover:bg-slate-400 px-6">Ver</button>
+        </div>
+        <div class="ps-4">
+          <label class="text-xl">Referencia:</label>
+          <input id="reference" type="text" readonly value={ reference } class="bg-[#D9D9D9] rounded-lg w-2/4 ps-2">
+        </div>
+      </div>
+      
+    </section>
+    <div class="pt-4">
+      <button id="cancelOrder" class="py-1 px-10 rounded-full text-white border-2 border-black bg-red-500 hover:bg-red-800">Cancelar</button>
+      <button id="confirmOrder" class="py-1 px-10 rounded-full text-white border-2 border-black bg-green-500 hover:bg-green-800">Confirmar</button>
+      <button id="closeModal" class="py-1 px-10 rounded-full text-black underline">Cerrar</button>
+    </div>          
+  </div>
+</dialog>
+
+<span id="id" class="hidden">{ id }</span>
+<span id="status" class="hidden">{ status }</span>
+
+<script>
+  const cancelOrder = document.getElementById('cancelOrder') as HTMLButtonElement;
+  const confirmOrder = document.getElementById('confirmOrder') as HTMLButtonElement;
+  const span = document.getElementById('id') as HTMLSpanElement;
+
+  const id = span.innerText;
+
+  cancelOrder.addEventListener('click', () => {
+    fetch(`https://api.blackonline.juanmbv.site/api/orders/${id}`, {
+      method: 'DELETE',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+      alert('Pedido cancelado');
+      location.reload();
+    })
+  })
+
+  const status = document.getElementById('status').innerText;
+  
+
+  confirmOrder.addEventListener('click', () => {
+    var nextStatus = '';
+    if(status === 'PENDING'){
+      nextStatus = 'ORDERS'
+    } else if(status === 'ORDERS'){
+      nextStatus = 'IN_PROCESS'
+    } else if(status === 'IN_PROCESS'){
+      nextStatus = 'FINISHED'
+    } else if(status === 'FINISHED'){
+      alert("El pedido ya ha sido finalizado")
+      location.reload();
+      return;
+    }
+
+    fetch(`https://api.blackonline.juanmbv.site/api/orders/change-status/${id}/${nextStatus}`, {
+      method: 'PUT',
+      headers: {
+        'Content-Type': 'application/json'
+      }
+    }).then(() => {
+      alert('Pedido confirmado');
+      location.reload();
+    })
+  })
+</script>
+

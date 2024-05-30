@@ -1,0 +1,46 @@
+---
+import ModalOrder from './ModalOrder.astro';
+import ModalWork from './ModalWork.astro';
+
+interface Props {
+  order: any;
+}
+
+const { order } = Astro.props;
+
+const client = order.quote.client;
+const work = order.quote.work;
+const quote = order.quote;
+---
+
+<button id="work" class="flex flex-col gap-6 text-2xl font-semibold bg-white m-1 p-2 rounded-lg min-w-[97%]">
+  <span>{ work.name }</span>
+  <span>{ quote.quoteDate }</span>
+</button>
+
+<ModalOrder id={ order.order_id } status={ order.status } name={ `${client.firstName} ${client.lastName}` } phone={ client.phone } date={ quote.quoteDate } reference={ order.reference } work={ work }/>
+
+<ModalWork work={ work }/>
+
+<script>
+  const modal = document.getElementById('modal') as HTMLDialogElement;
+  const modalWork = document.getElementById('modalWork') as HTMLDialogElement;
+
+  document.getElementById('work').addEventListener('click', () => {
+    modal.showModal();
+  })
+
+  document.getElementById('closeModal').addEventListener('click', () => {
+    modal.close();
+  })
+
+  document.getElementById('viewWork').addEventListener('click', () => {
+    modalWork.showModal();
+  })
+
+  document.getElementById('closeModalWork').addEventListener('click', () => {
+    modalWork.close();
+  })
+
+
+</script>

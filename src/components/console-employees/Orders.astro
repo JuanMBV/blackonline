@@ -1,0 +1,40 @@
+---
+import ContainerOrder from "./ContainerOrder.astro"
+
+const PENDING = await fetch('https://api.blackonline.juanmbv.site/api/orders/status/PENDING', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application'
+  }
+}).then(res => res.json())
+
+
+const ORDERS = await fetch('https://api.blackonline.juanmbv.site/api/orders/status/ORDERS', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application'
+  }
+}).then(res => res.json())
+
+const IN_PROCESS = await fetch('https://api.blackonline.juanmbv.site/api/orders/status/IN_PROCESS', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application'
+  }
+}).then(res => res.json())
+
+const FINISHED = await fetch('https://api.blackonline.juanmbv.site/api/orders/status/FINISHED', {
+  method: 'GET',
+  headers: {
+    'Content-Type': 'application'
+  }
+}).then(res => res.json())
+
+---
+
+<main class="grid grid-cols-4 justify-center items-center min-h-[80vh] ms-9 mt-6 mb-5">
+  <ContainerOrder title="Por confirmar" list={PENDING}/>
+  <ContainerOrder title="Pedidos" list={ORDERS}/>
+  <ContainerOrder title="En proceso" list={IN_PROCESS}/>
+  <ContainerOrder title="Finalizados" list={FINISHED}/>
+</main>
